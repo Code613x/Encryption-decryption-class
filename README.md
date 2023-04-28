@@ -17,7 +17,22 @@ I hereby declare that I am not liable for any damages caused by the program. If 
 In case you require any assistance with your project, please do not hesitate to contact me on Discord. **Alt+f4#3704**
 
 ## Code
-To encrypt a file, you can use the following code.
+To encrypt a file, you can use the following code:
 ```c#
 CypherCode613.EncryptFile(File name or path of the file, password);
+```
+
+To decrypt a file, you can use the following code:
+```c#
+CypherCode613.DecryptFile(File name or path of the file, password);
+```
+
+To encrypt the folder and all its subdirectories, use the following code:
+```c#
+CypherCode613.EncryptFolder(Path, Password);
+```
+
+To decrypt the folder and all its subdirectories, use the following code:
+```c#
+CypherCode613.DecryptDirectory(Path, Password);
 ```
