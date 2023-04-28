@@ -1,6 +1,8 @@
-﻿using System;
+using System;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 
 public class CypherCode613
 {
@@ -103,23 +105,19 @@ public class CypherCode613
 
         using (FileStream fsIn = new FileStream(inputFile, FileMode.Open, FileAccess.Read))
         {
-            // Read the salt, key, and IV from the input file
             fsIn.Read(salt, 0, salt.Length);
             Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
             key = pbkdf2.GetBytes(32);
             fsIn.Read(iv, 0, iv.Length);
 
-            // Create the AES decryptor
             using (Aes aes = Aes.Create())
             {
                 aes.KeySize = 256;
                 aes.Key = key;
                 aes.IV = iv;
 
-                // Decrypt the input stream
                 using (CryptoStream cs = new CryptoStream(fsIn, aes.CreateDecryptor(), CryptoStreamMode.Read))
                 {
-                    // Create the output file
                     string outputFile = Path.Combine(Path.GetDirectoryName(inputFile), Path.GetFileNameWithoutExtension(inputFile));
                     using (FileStream fsOut = new FileStream(outputFile, FileMode.Create, FileAccess.Write))
                     {
@@ -129,7 +127,56 @@ public class CypherCode613
             }
         }
 
-        // Delete the input file
         File.Delete(inputFile);
+    }
+    public static string EncryptText(string text, string password)
+    {
+        byte[] salt = GenerateRandomBytes(SaltSize);
+        byte[] key = GenerateKey(password, salt);
+
+        using (var aes = Aes.Create())
+        {
+            aes.Key = key;
+            aes.GenerateIV();
+
+            using (var msOutput = new MemoryStream())
+            {
+                msOutput.Write(salt, 0, SaltSize);
+                msOutput.Write(aes.IV, 0, 16);
+
+                using (var cryptoStream = new CryptoStream(msOutput, aes.CreateEncryptor(), CryptoStreamMode.Write))
+                {
+                    byte[] bytesToEncrypt = Encoding.UTF8.GetBytes(text);
+                    cryptoStream.Write(bytesToEncrypt, 0, bytesToEncrypt.Length);
+                }
+
+                return Convert.ToBase64String(msOutput.ToArray());
+            }
+        }
+    }
+
+    public static string DecryptText(string encryptedText, string password)
+    {
+        byte[] encryptedBytes = Convert.FromBase64String(encryptedText);
+        byte[] salt = encryptedBytes.Take(SaltSize).ToArray();
+        byte[] iv = encryptedBytes.Skip(SaltSize).Take(16).ToArray();
+        byte[] key = GenerateKey(password, salt);
+
+        using (var aes = Aes.Create())
+        {
+            aes.Key = key;
+            aes.IV = iv;
+
+            using (var msInput = new MemoryStream(encryptedBytes, SaltSize + 16, encryptedBytes.Length - SaltSize - 16))
+            {
+                using (var cryptoStream = new CryptoStream(msInput, aes.CreateDecryptor(), CryptoStreamMode.Read))
+                {
+                    using (var srDecrypt = new StreamReader(cryptoStream))
+                    {
+                        return srDecrypt.ReadToEnd();
+                    }
+                }
+            }
+        }
     }
 }
