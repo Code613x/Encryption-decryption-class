@@ -18,6 +18,6 @@ In case you require any assistance with your project, please do not hesitate to 
 
 ## Code
 To encrypt a file, you can use the following code.
-```csharp
+```c#
 CypherCode613.EncryptFile(File name or path of the file, password);
 ```
