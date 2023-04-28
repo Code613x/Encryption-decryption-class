@@ -60,7 +60,7 @@ public class CypherCode613
 
         using (var rng = new RNGCryptoServiceProvider())
         {
-            rng.GetBytes(randomBytes);
+            rng.GetBytes(randomBytes); 
         }
 
         return randomBytes;
