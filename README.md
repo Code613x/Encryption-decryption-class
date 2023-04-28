@@ -15,3 +15,9 @@ I hereby declare that I am not liable for any damages caused by the program. If 
 
 ## Contact
 In case you require any assistance with your project, please do not hesitate to contact me on Discord. **Alt+f4#3704**
+
+## Code
+To encrypt a file, you can use the following code.
+```csharp
+CypherCode613.EncryptFile(File name or path of the file, password);
+```
