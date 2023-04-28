@@ -36,3 +36,13 @@ To decrypt the folder and all its subdirectories, use the following code:
 ```c#
 CypherCode613.DecryptDirectory(Path, Password);
 ```
+
+To encrypt text, use the following code:
+```c#
+CypherCode613.EncryptText(text, Password);
+```
+
+To decrypt text, use the following code:
+```c#
+CypherCode613.DecryptText(text, Password);
+```
