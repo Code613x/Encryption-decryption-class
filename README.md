@@ -16,7 +16,7 @@ The decryption process uses the same salt and password to regenerate the key, an
 This Encryption and Decryption class is designed to be easy to use and integrate into existing C# .NET projects, with a focus on performance, security, and compatibility with the .NET Framework 4.8. It is suitable for a wide range of applications, such as protecting sensitive data, secure file transfer, and secure communication over networks.
 
 ## Contact
-In case you require any assistance with your project, please do not hesitate to contact me on Discord. **Alt+f4#3704**
+In case you require any assistance with your project, please do not hesitate to contact me on Discord. **Code613**
 
 ## Code
 To encrypt a file, you can use the following code:
